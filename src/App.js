@@ -1,6 +1,14 @@
 import logo from './logo.svg';
 import './App.css';
-import './main.css'
+import './main.css';
+import { open } from "sqlite";
+import sqlite3 from "sqlite3";
+
+const db = await open({
+  filename: "./main.db",
+  driver: sqlite3.Database,
+});
+
 
 function App() {
   return (
@@ -9,7 +17,19 @@ function App() {
         <meta charset="UTF-8" />
         <title>Base representada</title>
       </head>
+
       <header>
+        <div className="BlueBack">
+          Bienvenido a mi programa
+        </div>
+      </header>
+      <nav className='GrayBack'>
+        <div className="BlueBack"> Lista para Ver <br /></div>
+        <div className="BlueBack"> Añadir Nuevo <br /></div>
+        <div className="BlueBack"> Reload <br /></div>
+        <div className="BlueBack"> Modo Día o Noche</div>
+      </nav>
+      <content>
         <div className="grid base">
           <div className="ghti" id="headline">
               Titulo
@@ -30,12 +50,12 @@ function App() {
               </div>
           </div>
           <div className="gbim"><img className="bima gl"src={logo} alt="logo" /></div>
-          <div className="gr1f">Director:<br /><span id="dir" className='defaultBlue'/>Placeholder</div>
-          <div className="gr2f">Distribuidora:<br /><span id="dis" className='defaultBlue' />Placeholder</div>
-          <div className="gr3l">cantidad<br />Temporadas</div>
-          <div className="gr3r"><span id="vis" className='defaultBlue'/>Serie vista el:<br />00/00/0000</div>
+          <div className="gr1f">Director:<br /><span id="dir" className='defaultBlue'>Placeholder</span></div>
+          <div className="gr2f">Distribuidora:<br /><span id="dis" className='defaultBlue'>Placeholder</span></div>
+          <div className="gr3l">Numero<br /><span id="vis" className='defaultBlue'>Temporadas</span></div>
+          <div className="gr3r"><span id="vis" className='defaultBlue'>Serie vista el:</span><br />00/00/0000</div>
         </div>
-      </header>
+      </content>
     </div>
   )
 }

@@ -157,13 +157,30 @@
   margin: 10px;
   align-items: center;
 }
-.tabletoo{
+.BlueBack{
   display: flex;
-  padding: 4px;
-  justify-content: space-around;
-  flex-wrap: wrap;
-  margin: 10px;
+  justify-content: center;
   align-items: center;
+  font-weight: bolder;
+  background-color: #6495ed;
+  letter-spacing: 3px;
+  border-radius: 25px;
+  margin: 10px;
+  padding: 10px;
+  height: 3em;
+}
+
+.GrayBack{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bolder;
+  background-color: #3b3b3b;
+  letter-spacing: 3px;
+  border-radius: 25px;
+  margin: 10px;
+  padding: 10px;
+  height: 3em;
 }
 
 .box {
