@@ -1,18 +1,36 @@
 import logo from './logo.svg';
 import './App.css';
 import './main.css';
-import { open } from "sqlite";
-import sqlite3 from "sqlite3";
+import { useState, useEffect } from 'react';
+import { supabase } from './supabase.js';
 
-const db = await open({
-  filename: "./main.db",
-  driver: sqlite3.Database,
-});
-
+console.log(process.env.REACT_APP_SUPABASE_URL);
+console.log(process.env.REACT_APP_SUPABASE_ANON_KEY);
 
 function App() {
+   const [media, setMedia] = useState(null);
+
+  const fetchData = async () => {
+    const { data, error } = await supabase
+      .from("MEDIA")
+      .select("nombre, year, duracion, categoria:CATEGORIA ( duracion )")
+      .eq("id", 2)
+      .single();
+
+    if (error) {
+      console.error("Error fetching data:", error.message);
+    } else {
+      setMedia(data);
+      console.log(data);
+    }
+  }; 
+
+ useEffect(() => {
+    fetchData();
+  }, []); 
+
   return (
-    <div>
+    <>
       <head>
         <meta charset="UTF-8" />
         <title>Base representada</title>
@@ -32,8 +50,10 @@ function App() {
       <content>
         <div className="grid base">
           <div className="ghti" id="headline">
-              Titulo
-              <div className="rhyr">Año de Estreno</div>
+            {media ? media.nombre : "Cargando..."}
+          <div className="rhyr">
+            {media ? media.year : "Cargando..."}
+          </div>
           </div>
           <div className="ghbs" id="box">
               <div className="stfill star gl" id="star">
@@ -52,11 +72,15 @@ function App() {
           <div className="gbim"><img className="bima gl"src={logo} alt="logo" /></div>
           <div className="gr1f">Director:<br /><span id="dir" className='defaultBlue'>Placeholder</span></div>
           <div className="gr2f">Distribuidora:<br /><span id="dis" className='defaultBlue'>Placeholder</span></div>
-          <div className="gr3l">Numero<br /><span id="vis" className='defaultBlue'>Temporadas</span></div>
+          <div className="gr3l">
+            {media ? media.duracion : "Cargando..."}{" "}
+          <span id="vis" className='defaultBlue'>
+            {media ? media.categoria.duracion : "Cargando..."}
+          </span></div>
           <div className="gr3r"><span id="vis" className='defaultBlue'>Serie vista el:</span><br />00/00/0000</div>
         </div>
       </content>
-    </div>
+    </>
   )
 }
 export default App;
