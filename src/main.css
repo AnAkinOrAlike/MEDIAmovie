@@ -132,10 +132,11 @@
   font-weight: bolder;
   letter-spacing: 3px;
   transition: all 0.5s cubic-bezier(1, -0.01, 0, 1.53) 100ms;
-  direction: rtl;
 }
-.star label:hover, .star label:hover ~ label, .star input[type="radio"]:checked ~ label {
-  color: #6495ed;
+.star label:hover, 
+.star label:hover ~ label, 
+.star input[type="radio"]:checked ~ label {
+  color: var(--mainColor);
   cursor: pointer;
  }
  
@@ -231,7 +232,6 @@
   align-content: center;
   grid-column: 1 / span 2;
   grid-row: 1;
-  background-color:#6495ed;
   color: #fff;
   padding-left: 20px;
   text-align: start;
@@ -251,7 +251,6 @@
   align-content: center;
   grid-column: 3 / span 2;
   grid-row: 1;
-  background-color: #6495ed;
   color: #fff;
   font-family: 'Bahnschrift', sans-serif;
   border-top-right-radius: 14px;
@@ -389,8 +388,4 @@
   justify-content: center;
   width: 39.63px;
   height: 49.13px;
-}
-
-.defaultBlue{
-  color: #6495ed;
 }
