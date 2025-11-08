@@ -1,6 +1,5 @@
 /*Dark and Light Mode*/
 :root {
-  background-color: #ffffff;
   color: #242424; 
 }
 
@@ -19,8 +18,20 @@
   border-radius: 50px;
 }
 
+input[type="color"] {
+  appearance: none;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  height: 15em;
+  padding: 0;
+  width: 15em;
+}
+
 /*Headers*/
-.HeaderBack{
+.HeaderLista{
   display: grid;
   grid-template-rows: repeat(2, 1fr);
   background-color: #3b3b3b;
@@ -29,8 +40,18 @@
   padding: 10px;
   justify-items: center;
   justify-content: center;
-  background-size: contain;
   background-image: url('/public/Imagenes/computer_back.jpg')
+}
+.HeaderForm{
+  display: grid;
+  grid-template-rows: repeat(2, 1fr);
+  background-color: #3b3b3b;
+  color: #fff;
+  text-shadow: 2px 2px #3b3b3b;
+  padding: 10px;
+  justify-items: center;
+  justify-content: center;
+  background-image: url('/public/Imagenes/book_back.jpg')
 }
 .HeaderWelcome{
   grid-column: span 3 / span 3;
@@ -87,14 +108,14 @@
 .divider::before {
   content: "";
   width: 10%;
-  border-bottom: 1px solid ;
+  border-bottom: 5px solid ;
   margin-right: 3em;
 }
 
 .divider::after {
   content: "";
   flex: 1;
-  border-bottom: 1px solid ;
+  border-bottom: 5px solid ;
   margin-left: 3em;
 }
 
@@ -224,3 +245,104 @@
   font-family: 'Bahnschrift', sans-serif;
 }
 /*--*/
+
+/*Formulario*/
+
+.formTable {
+  /*Flex para todos los inputs*/
+  gap: 16px;
+  display: grid;
+  align-items: center;
+  justify-content: center;
+  row-gap: 1.5cm;
+  box-shadow: 5px 0px 10px 10px rgba(0, 0, 0, 0.4);
+  margin: auto;
+  width: 30em;
+}
+
+.fgty{
+  /*Formulario grid para Titulo y Year*/
+  display: grid;
+  grid-template-columns: 17em 6em;
+  grid-template-rows: repeat(2, 1fr);
+  column-gap: 2em;
+  height: 4.2em;
+}
+
+.fgff{
+  /*Formulario separado en 50 y 50*/
+  display: grid;
+  grid-template-columns: 11em 11em;
+  grid-template-rows: repeat(2, 1fr);
+  column-gap: 3em;
+  height: 4.2em;
+}
+
+.fltx{
+  /*Formulario Labels Texto*/
+  font-size: larger;
+  font-weight: 500;
+  padding: 0px 10px;
+  height: 1.2em;
+}
+
+.fcit{
+  /*Formulario fondo de color input texto*/
+  height: 3em;
+  border: 2px solid #3551a9;
+  background: #3551a9;
+  border-radius: 5px;
+  padding: 0px 8px;
+  color: #fff;
+}
+
+.fbit{
+  /*Formulario borde input texto*/
+  height: 3em;
+  border: 2px solid #3551a9;
+  border-radius: 5px;
+  padding: 0px 8px;
+}
+
+.fbst{
+  height: 1.8em;
+  border: 2px solid #3551a9;
+  border-radius: 30px;
+  padding: 0px 8px;
+  background: transparent;
+}
+
+.fbim{
+  height: 3.5em;
+  width: 3.5em;
+  border: 2px solid #3551a9;
+  border-radius: 10px;
+}
+
+.formImage {
+display: flex;
+justify-content: space-around;
+flex-wrap: wrap;
+align-items: center;
+}
+
+.image {
+width: 100px;
+height: 100px;
+background-color: #fff;
+border-radius: 8px;
+box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.color-block {
+width: 100px;
+height: 100px;
+background-color: #070707;
+border-radius: 8px;
+}
+
+.text {
+font-size: 18px;
+font-weight: bold;
+color: #070707;
+}
