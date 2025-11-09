@@ -44,8 +44,6 @@ export default function ListaParaVer() {
         const randomized = shuffle(combined);
         console.log(randomized);
         setMedia(randomized);
-        /*console.log(combined);
-        setMedia(combined);*/
     };
 
     function GridItem({ media }) {

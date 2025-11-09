@@ -1,8 +1,9 @@
 import '../main.css';
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from 'react';
-import { LibraryAdd, DarkMode, Visibility } from '@nine-thirty-five/material-symbols-react/sharp';
+import { LibraryAdd, DarkMode, Visibility, Image, Palette, CardsStar, DashboardCustomize } from '@nine-thirty-five/material-symbols-react/sharp';
 import { supabase } from '../supabase.js';
+import React from 'react';
 
 export default function NuevoMedia(){
 const navigate = useNavigate();
@@ -22,7 +23,7 @@ const [year, setYear] = useState('')
 const [duracion, setDuracion] = useState('')
 const [imagen, setImagen] = useState('')
 const [previewUrl, setPreviewUrl] = useState(null)
-const [colorhex, setColorhex] = useState('')
+const [colorhex, setColorhex] = useState('#6495ed')
 const [director, setDirector] = useState('')
 const [compania, setCompania] = useState('')
 const [categorias, setCategorias] = useState([])
@@ -32,6 +33,62 @@ const [visto, setVisto] = useState(0)
 const [ultimoVisto, setUltimoVisto] = useState("");
 const [avance, setAvance] = useState(0);
 const [stars, setStars] = useState(0);
+
+
+function StarInput({ rating, onChange}) {
+    return (
+        <div className="star fcit popGlow" id="star">
+            {[5, 4, 3, 2, 1].map(num => (
+                <React.Fragment key={num}>
+                <input
+                    id={`radiostar${num}`}
+                    type="radio"
+                    name="stellas"
+                    value={num}
+                    className="none"
+                    checked={rating === num}
+                    onChange={() => onChange(num)}
+                />
+                <label
+                    htmlFor={`radiostar${num}`}
+                    className={`star-label ${num <= rating ? "active" : ""}`}
+                >
+                    ★
+                </label>
+                </React.Fragment>
+            ))}
+        </div>
+    )
+}
+
+function ProgressRadio({ value, onChange }) {
+  return (
+    <div className="cube fcit popGlow">
+        {[...Array(8)].map((_, i) => {
+            const blockValue = 100 - i * 12.5;
+            return (
+            <React.Fragment key={i}>
+                <input
+                type="radio"
+                id={`cube${i}`}
+                name="progress"
+                value={blockValue}
+                className="none"
+                checked={value === blockValue}
+                onChange={() => onChange(blockValue)}
+                />
+                <label
+                htmlFor={`cube${i}`}
+                className={value >= blockValue ? "active" : ""}
+                >
+                ■
+                </label>
+            </React.Fragment>
+            );
+        })}
+    </div>
+  );
+}
 
 async function getOrCreateId(table, column, value) {
     if (!value) return null;
@@ -151,7 +208,7 @@ useEffect(() => {
   async function fetchCategorias() {
     const { data, error } = await supabase
       .from("CATEGORIA")
-      .select("id, categoria");
+      .select("id, categoria, duracion");
 
     if (error) {
       console.error(error);
@@ -162,6 +219,9 @@ useEffect(() => {
 
   fetchCategorias();
 }, []);
+
+const categoriaSeleccionada = categorias.find(cat => String(cat.id) === String(categoriaId));
+
 
 return(
     <>
@@ -186,7 +246,7 @@ return(
                 </label>
                 <input type="text" 
                     id="Titulo" 
-                    className='fcit'
+                    className='fcit popGlow'
                     value={nombre|| ''}
                     required
                     onChange={(e) => setNombre(e.target.value)}
@@ -194,7 +254,7 @@ return(
                 />
                 <input type="number" 
                     id="Year" 
-                    className='fcit'
+                    className='fcit popGlow'
                     value={year|| ''}
                     required
                     onChange={(e) => setYear(e.target.value)}
@@ -212,121 +272,132 @@ return(
                     value={categoriaId || ""}
                     required
                     id='Categoria'
-                    className='fbit'
+                    className='fbit popGlow'
                     onChange={(e) => setCategoriaId(e.target.value)}>
-                    <option value=""> seleccionar </option>
+                    <option value=""> Seleccionar: </option>
                     {categorias.map((cat) => (<option key={cat.id} value={cat.id}>{cat.categoria}</option>))}
                 </select>
-                <input type="text" 
-                    id="Duración" 
-                    className='fbit'
-                    value={duracion|| ''}
+                <div style={{ display: "flex"}}>
+                <input
+                    type="text"
+                    id="Duración"
+                    className="fbit fllw popGlow"
+                    value={duracion || ''}
                     required
                     onChange={(e) => setDuracion(e.target.value)}
                     placeholder=' _ _ _ _ |'
                 />
+                    <span className="flrw fcit popGlow">
+                        {categoriaSeleccionada?.duracion || ""}
+                    </span>
+                </div>
             </div>
-
-            <div className="formImage">
+            <div className="fgim center">
                 {previewUrl ? (
-                    <img src={previewUrl} alt="Preview" className="fbim" />
+                    <img src={previewUrl} alt="Preview" className="fbii" />
                 ) : (
-                    <div className="fbim" />
+                    <div className="fbii colOne " />
                 )}
-                <label htmlFor="single" className="fbst">
-                    Imagen
+                <label htmlFor="single" className="flib colOne popGlow">
+                    <Image width={48} height={48} />
                 </label>
                 <input
-                    style={{ visibility: "hidden", position: "absolute" }}
+                    className="nope"
                     type="file"
                     id="single"
                     accept="image/*"
                     onChange={handleFileChange}
                 />
-            </div>
-            <input type="color" 
-                id="ColorHex" 
-                value={colorhex|| ''}
-                required
-                onChange={(e) => setColorhex(e.target.value)}
-            />
-            <label htmlFor='Director'>
-                Director
+                <div>
+                <label htmlFor="ColorHex" className="flib colTwo popGlow">
+                    <Palette width={48} height={48} />
+                </label>
+                <input type="color" 
+                    id="ColorHex" 
+                    className="fbci colTwo"
+                    style={{ "--colorHex": colorhex }}
+                    value={colorhex|| ''}
+                    required
+                    onChange={(e) => setColorhex(e.target.value)}
+                />
+            </div></div>
+            <div className='fgft'>
+            <label htmlFor='Director' className="fltx">
+                            Director
             </label>
             <input type="text" 
                 id="Director" 
-                className='fbit'
+                className='fbit popGlow'
                 value={director|| ''}
                 required
                 onChange={(e) => setDirector(e.target.value)}
                 placeholder=' _ _ _ _ |'
             />
-            <label htmlFor='Distribuidora'>
-                Distribuidora
-            </label>
-            <input type="text" 
-                id="Distribuidora" 
-                className='fbit'
-                value={compania|| ''}
-                required
-                onChange={(e) => setCompania(e.target.value)}
-                placeholder=' _ _ _ _ |'
-            />
-            
-            
-            <label htmlFor='Pais'>
-                País
-            </label>
-            <input type="text" 
-                id="Pais" 
-                className='fbit'
-                value={country|| ''}
-                required
-                onChange={(e) => setCountry(e.target.value)}
-                placeholder=' _ _ _ _ |'
-            />
-            <label>
-                ¿Visto?
-                <input
-                    type="checkbox"
-                    checked={visto}
-                    onChange={(e) => setVisto(e.target.checked)}
+            </div>
+            <div className='fgft'>
+                <label htmlFor='Distribuidora' className="fltx">
+                    Distribuidora
+                </label>
+                <input type="text" 
+                    id="Distribuidora" 
+                    className='fbit popGlow'
+                    value={compania|| ''}
+                    required
+                    onChange={(e) => setCompania(e.target.value)}
+                    placeholder=' _ _ _ _ |'
                 />
-            </label>
-            <label htmlFor='Ultimovisto'>
-                Último visto
-            </label>
-            <input
-                type="date"
-                id="Ultimovisto"
-                className='fbit'
-                value={ultimoVisto || ""}
-                onChange={(e) => setUltimoVisto(e.target.value)}
-            />
+            </div>
+            <div className='fgft'>
+                <label htmlFor='Pais' className="fltx"> 
+                    País
+                </label>
+                <input type="text" 
+                    id="Pais" 
+                    className='fbit popGlow'
+                    value={country|| ''}
+                    required
+                    onChange={(e) => setCountry(e.target.value)}
+                    placeholder=' _ _ _ _ |'
+                />
+            </div>
+            <div className='fgff'>
+                <input type="radio" value={0} name="visto" className='none' id='marcha' onChange={(e) => setVisto(Number(e.target.value))}/>
+                <input type="radio" value={1} name="visto" className='none' id='yavisto' onChange={(e) => setVisto(Number(e.target.value))}/>
+                <label htmlFor='marcha' className={`pbrs popGlow ${visto === 0 ? "active" : ""}`}><CardsStar width={30} height={30}/>Para ver</label>
+                <label htmlFor='yavisto' className={`pbrs popGlow ${visto === 1 ? "active" : ""}`}><DashboardCustomize width={30} height={30}/>Vistos</label>
+            </div>
+            <div className='fgff'>
+            
+            
             {visto ? (
-                <label>
-                    Stars: {stars}
+                <React.Fragment>
+                    <div className="fltx">Stars: {stars}</div>
+                    <label htmlFor='Ultimovisto' className="fltx">Último visto</label>
+                    <StarInput rating={stars} onChange={(n) => setStars(n)}/>
                     <input
-                    type="range"
-                    min="1"
-                    max="5"
-                    value={stars}
-                    onChange={(e) => setStars(Number(e.target.value))}
+                        type="date" 
+                        id="Ultimovisto"
+                        className='fbit'
+                        value={ultimoVisto || ""}
+                        onChange={(e) => setUltimoVisto(e.target.value)}
                     />
-                </label>
+                </React.Fragment>
             ) : (
-                <label>
-                    Avance: {avance}%
+                <React.Fragment>
+                    <div className="fltx">Avance: {avance}%</div>
+                    <label htmlFor='Ultimovisto' className="fltx">Último visto</label>
+                    <ProgressRadio value={avance} onChange={(n) => setAvance(n)} />
                     <input
-                    type="range"
-                    min="1"
-                    max="100"
-                    value={avance}
-                    onChange={(e) => setAvance(Number(e.target.value))}
+                        type="date" 
+                        id="Ultimovisto"
+                        className='fbit'
+                        value={ultimoVisto || ""}
+                        onChange={(e) => setUltimoVisto(e.target.value)}
                     />
-                </label>
+                </React.Fragment>
             )}
-            <button type="submit">Guardar</button>
+            </div>
+            <button type="submit"  className='pbrs popGlow'>Guardar</button>
         </form>
     </main>
     </>

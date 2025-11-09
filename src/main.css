@@ -10,6 +10,7 @@
 /*--*/
 
 .none{display:none;}
+.nope{ visibility:hidden; position: absolute;}
 .over{overflow: visible;}
 
 .popGlow:hover{
@@ -17,17 +18,11 @@
   box-shadow: 0px 0px 10px 0px #000;
   border-radius: 50px;
 }
-
-input[type="color"] {
-  appearance: none;
-  -moz-appearance: none;
-  -webkit-appearance: none;
-  background: none;
-  border: 0;
-  cursor: pointer;
-  height: 15em;
-  padding: 0;
-  width: 15em;
+.center{
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  height: 11em;
 }
 
 /*Headers*/
@@ -278,12 +273,51 @@ input[type="color"] {
   height: 4.2em;
 }
 
+.fgft{
+  /*Formulario separado en dos filas*/
+  display: grid;
+  grid-template-rows: repeat(2, 1fr);
+  column-gap: 3em;
+  height: 4.2em;
+}
+
+.fgim {
+    /*Formulario separado en dos filas para las cajas de color e imagen*/
+  display: grid;
+  grid-template-columns: 11em 11em;
+  grid-template-rows: auto auto;
+  column-gap: 3em;
+  height: auto;
+}
+
+ .colOne{
+  grid-column-start: 1;
+ }
+ .colTwo{
+  grid-column-start: 2;
+ }
+
 .fltx{
   /*Formulario Labels Texto*/
   font-size: larger;
   font-weight: 500;
   padding: 0px 10px;
   height: 1.2em;
+}
+
+.fllw{
+  /*Formulario Label left Wing*/
+  width: 30%;
+  border-radius: 5px 0 0 5px !important;
+}
+
+.flrw{
+  /*Formulario Label right Wing*/
+  display: flex;
+  width: 70%;
+  align-items: center;
+  height: 2.5em !important;
+  border-radius: 0 5px 5px 0 !important;
 }
 
 .fcit{
@@ -294,6 +328,7 @@ input[type="color"] {
   border-radius: 5px;
   padding: 0px 8px;
   color: #fff;
+  transition: all 0.5s cubic-bezier(1, -0.01, 0, 1.53) 100ms;
 }
 
 .fbit{
@@ -302,47 +337,100 @@ input[type="color"] {
   border: 2px solid #3551a9;
   border-radius: 5px;
   padding: 0px 8px;
+  background-color: transparent;
+  color: inherit;
+  transition: all 0.5s cubic-bezier(1, -0.01, 0, 1.53) 100ms;
 }
 
-.fbst{
-  height: 1.8em;
-  border: 2px solid #3551a9;
-  border-radius: 30px;
-  padding: 0px 8px;
-  background: transparent;
-}
-
-.fbim{
-  height: 3.5em;
-  width: 3.5em;
-  border: 2px solid #3551a9;
+.fbii{
+  /*Formulario box de imagen input*/
+  height: 11em;
+  width: 11em;
   border-radius: 10px;
+  transition: all 0.5s cubic-bezier(1, -0.01, 0, 1.53) 100ms;
 }
 
-.formImage {
-display: flex;
-justify-content: space-around;
-flex-wrap: wrap;
-align-items: center;
+.fbci{
+  /*Formulario box de color input*/
+  height: 13em;
+  width: 13em;
+  border-radius: 10px;
+  appearance: none;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  background: var(--colorHex);;
+  padding: 0;
+  cursor: pointer;
+  border: 0;
+  transition: all 0.5s cubic-bezier(1, -0.01, 0, 1.53) 100ms;
 }
 
-.image {
-width: 100px;
-height: 100px;
-background-color: #fff;
-border-radius: 8px;
-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+.flib{
+  /*Formulario label para las box de imagen y color*/
+  padding: 4em;
+  border-radius: 30px;
+  background: transparent;
+  position: absolute;
+  width: 3em;
+  height: 3em;
+  color: #000;
+  border: 2px solid #3551a9;
+  transition: all 0.5s cubic-bezier(1, -0.01, 0, 1.53) 100ms;
 }
 
-.color-block {
-width: 100px;
-height: 100px;
-background-color: #070707;
-border-radius: 8px;
+.pbrs{
+  /*estilo de boton de pildora radio seen*/
+  height: 3em;
+  border: 2px solid #3551a9;
+  background: #6495ed;
+  border-radius: 5px;
+  text-align: center;
+  font-weight: 500;
+  font-size: larger;
+  align-content: center;
+  color: #fff;
+  transition: all 0.5s cubic-bezier(1, -0.01, 0, 1.53) 100ms;
 }
 
-.text {
-font-size: 18px;
-font-weight: bold;
-color: #070707;
+.pbrs:active, .pbrs.active{
+  background: #3551a9;
+}
+
+.star {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: center;
+  direction: ltr;
+}
+
+.star-label {
+  font-size: 2em;
+  color: #ccc;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.star-label:hover,
+.star-label:hover ~ .star-label,
+.star-label.active {
+  color: #6495ed;
+}
+
+.cube {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: center;
+  direction: ltr;
+  align-items: center;
+}
+
+.cube label {
+  cursor: pointer;
+  transition: color 0.3s;
+  color: #fff;
+  font-size: x-large;
+}
+
+.cube label.active, .cube label:hover, .cube label:hover ~ .cube-label {
+  color: #6495ed;
 }
