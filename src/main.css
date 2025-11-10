@@ -1,3 +1,18 @@
+/*Index CSS code*/
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
 /*Dark and Light Mode*/
 :root {
   color: #242424; 
@@ -17,6 +32,7 @@
   transform: scale(1.2);
   box-shadow: 0px 0px 10px 0px #000;
   border-radius: 50px;
+  cursor: pointer;
 }
 .center{
   justify-content: center;
@@ -381,7 +397,7 @@
 .pbrs{
   /*estilo de boton de pildora radio seen*/
   height: 3em;
-  border: 2px solid #3551a9;
+  border: none;
   background: #6495ed;
   border-radius: 5px;
   text-align: center;
@@ -392,7 +408,7 @@
   transition: all 0.5s cubic-bezier(1, -0.01, 0, 1.53) 100ms;
 }
 
-.pbrs:active, .pbrs.active{
+.pbrs:active, .pbrs.active, .pbrs:hover{
   background: #3551a9;
 }
 
@@ -405,7 +421,7 @@
 
 .star-label {
   font-size: 2em;
-  color: #ccc;
+  color: #fff;
   cursor: pointer;
   transition: color 0.3s;
 }
@@ -431,6 +447,20 @@
   font-size: x-large;
 }
 
-.cube label.active, .cube label:hover, .cube label:hover ~ .cube-label {
+.cube label.active, .cube label:hover, .cube label:hover ~ .cube label {
   color: #6495ed;
 }
+
+.pbbd {
+  height: 3em;
+  border: none;
+  background: #c0392b;
+  border-radius: 5px;
+  text-align: center;
+  font-weight: 500;
+  font-size: larger;
+  align-content: center;
+  color: #fff;
+  transition: all 0.5s cubic-bezier(1, -0.01, 0, 1.53) 100ms;
+}
+.pbbd:hover {background: #fbff0c; color: #000;}

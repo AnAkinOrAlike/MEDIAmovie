@@ -32,8 +32,6 @@ export default function ListaParaVer() {
             item.imagen = data.publicUrl;
         });
 
-       console.log(combined)
-
         function shuffle(arr) {
         return arr
             .map((item) => ({ sort: Math.random(), value: item }))
@@ -42,14 +40,16 @@ export default function ListaParaVer() {
         }
 
         const randomized = shuffle(combined);
-        console.log(randomized);
         setMedia(randomized);
+        /*setMedia(combined);*/
     };
 
     function GridItem({ media }) {
         const mainColor = media?.colorhex || "#6495ed";
         const rating = media?.stars || 0;
-
+        const handleClick = () => {
+            navigate("/nuevo", { state: { media } });
+        };
         return (
         <div className="gridvisto" style={{ "--main-color": mainColor }}>
             <div className="ghti" id="headline" style={{ backgroundColor: mainColor }}> {media?.nombre || "..."}
@@ -66,19 +66,18 @@ export default function ListaParaVer() {
             </div>
 
             <div className="gr1f">                                                      Director:
-            <br /><span className="bwbk">                                          {media?.director || "..."}
+            <br /><span className="bwbk">                                               {media?.director || "..."}
             </span></div>
 
             <div className="gr2f">                                                      Distribuidora:
-            <br /><span className="bwbk">                                          {media?.compania || "..."}
+            <br /><span className="bwbk">                                               {media?.compania || "..."}
             </span></div>
 
             <div className="gr3f">                                                      País:
-            <br /> <span className="bwbk">                                          {media?.country || "..."}
+            <br /> <span className="bwbk">                                              {media?.country || "..."}
             </span></div>
         </div>
         );
-    }
 
     function GridHeaderBoxSmall({ media, rating, mainColor }) {
         if (media?.stars) {
@@ -91,34 +90,26 @@ export default function ListaParaVer() {
         } else if (media?.avance && media.avance !== 0) {
             return (
             <>                                                        {media?.categoria || "..."} {media?.catvisto || "..."}
-            <br /><span className="bwbk">                                {media?.ultimo_visto || "00/00/0000"}
+            <br /><span className="bwbk">                             {media?.ultimo_visto || "00/00/0000"}
             </span>                                                   <ProgressBar value={media.avance} mainColor={mainColor} />
             </>
             );
         } else {
             return (
-            <>                                                           Actualizar Serie:
-            <br />
-            <div className="bstr popGlow" style={{ "--letterSpa": "normal" }}><BookmarkHeart height={30} width={30} />
+            <>                                                                                      Actualizar Serie:<br />
+            <div className="bstr popGlow" onClick={handleClick} style={{ "--letterSpa": "normal" }}><BookmarkHeart height={30} width={30} />
             </div></>
             );
         }
     }
 
-
     function StarRating({ rating, mainColor }) {
         return (
-        <div className="bstr popGlow" style={{ "--letterSpa": "3px" }}>
-            {[1, 2, 3, 4, 5].map(num => (<React.Fragment key={num}>
-            <input
-                id={`radio${num}`} type="radio" value={num} className="none" checked={rating === num} readOnly/>
-            <label
-                htmlFor={`radio${num}`}
-                id={`star${num}`}
-                style={{ color: num <= rating ? mainColor : "#000" }}>
-                ★
-            </label>
-            </React.Fragment>))}
+        <div className="bstr popGlow" onClick={handleClick} style={{ "--letterSpa": "3px" }}>
+            {[1, 2, 3, 4, 5].map(num => (
+            <label id={`star${num}`} key={num} style={{ color: num <= rating ? mainColor : "#000" }}>
+            ★
+            </label>))}
         </div>
         );
     }
@@ -131,12 +122,13 @@ export default function ListaParaVer() {
         i < filledBlocks ? "■" : "□"
     );
         return (
-        <div className="bstr popGlow" style={{ "--letterSpa": "-2px" }}>
+        <div className="bstr popGlow" onClick={handleClick} style={{ "--letterSpa": "-2px" }}>
             {bar}<span >{progress}%</span>
         </div>
         );
     }
-
+    }
+    
     const toggleTheme = () => {
         setTheme(prevTheme => (prevTheme === 'light' ? 'dark' : 'light'));
         document.body.className = theme;
@@ -164,12 +156,12 @@ export default function ListaParaVer() {
     <main>
         <span className="divider">Media</span>
         <div className='flexTable'>
-        {media.slice(0, main_limite).map((media) => (
-        <GridItem key={`${media.nombre}-${media.year}`} media={media} />
+        {media.slice(0, main_limite).map((item, index) => (
+        <GridItem key={index} media={item} />
         ))}
         </div>
-        
     </main>
+    <footer style={{height: "100px"}}></footer>
     </>
 )
 }

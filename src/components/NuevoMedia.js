@@ -1,7 +1,7 @@
 import '../main.css';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useState, useEffect } from 'react';
-import { LibraryAdd, DarkMode, Visibility, Image, Palette, CardsStar, DashboardCustomize } from '@nine-thirty-five/material-symbols-react/sharp';
+import { LibraryAdd, DarkMode, Visibility, Image, Palette, CardsStar, DashboardCustomize, Save, Delete } from '@nine-thirty-five/material-symbols-react/sharp';
 import { supabase } from '../supabase.js';
 import React from 'react';
 
@@ -17,6 +17,9 @@ const toggleTheme = () => {
 useEffect(() => {
         document.body.className = theme;
     }, [theme]);
+
+  const { state } = useLocation();
+  const media = state?.media;
 
 const [nombre, setNombre] = useState('')
 const [year, setYear] = useState('')
@@ -35,9 +38,40 @@ const [avance, setAvance] = useState(0);
 const [stars, setStars] = useState(0);
 
 
+  useEffect(() => {
+  if (!media) return;
+
+  if (media.nombre) setNombre(media.nombre);
+  if (media.year) setYear(media.year);
+  if (media.duracion) setDuracion(media.duracion);
+  if (media.imagen) {
+    setImagen(media.imagen);
+    setPreviewUrl(media.imagen);
+  }
+  if (media.colorhex) setColorhex(media.colorhex);
+  if (media.director) setDirector(media.director);
+  if (media.compania) setCompania(media.compania);
+  if (media.country) setCountry(media.country);
+  if (media.ultimo_visto) setUltimoVisto(media.ultimo_visto);
+  if (media.avance !== undefined) setAvance(media.avance);
+  if (media.stars !== undefined) setStars(media.stars);
+
+  if (media.stars !== undefined) {
+    setVisto(1);
+  } else {
+    setVisto(0);
+  }
+
+  if (media.categoria && categorias.length > 0) {
+    const match = categorias.find(cat => cat.categoria === media.categoria);
+    if (match) setCategoriaId(match.id);
+  }
+}, [media, categorias]);
+
+
 function StarInput({ rating, onChange}) {
     return (
-        <div className="star fcit popGlow" id="star">
+        <div className="star fcit popGlow">
             {[5, 4, 3, 2, 1].map(num => (
                 <React.Fragment key={num}>
                 <input
@@ -49,11 +83,7 @@ function StarInput({ rating, onChange}) {
                     checked={rating === num}
                     onChange={() => onChange(num)}
                 />
-                <label
-                    htmlFor={`radiostar${num}`}
-                    className={`star-label ${num <= rating ? "active" : ""}`}
-                >
-                    ★
+                <label htmlFor={`radiostar${num}`} className={`star-label ${num <= rating ? "active" : ""}`}>★
                 </label>
                 </React.Fragment>
             ))}
@@ -77,11 +107,7 @@ function ProgressRadio({ value, onChange }) {
                 checked={value === blockValue}
                 onChange={() => onChange(blockValue)}
                 />
-                <label
-                htmlFor={`cube${i}`}
-                className={value >= blockValue ? "active" : ""}
-                >
-                ■
+                <label htmlFor={`cube${i}`} className={value >= blockValue ? "active" : ""}>■
                 </label>
             </React.Fragment>
             );
@@ -124,27 +150,61 @@ async function getOrCreateId(table, column, value) {
 
 async function handleSubmit(e) {
     e.preventDefault();
-
-    let filePath = null
-    if (imagen) {
-      const fileExt = imagen.name.split(".").pop()
-      const fileName = `${nombre}-${Date.now()}.${fileExt}`
-      filePath = `Imagenes/${fileName}`
-
-      const { error } = await supabase.storage
-        .from("Imagenes")
-        .upload(filePath, imagen)
-
-      if (error) {
-        console.error(error)
-        return
-      }
-    }
-
     try {
         const directorId = await getOrCreateId("DIRECTORES", "artist", director);
         const companiaId = await getOrCreateId("COMPAÑIA", "hogar", compania);
         const countryId = await getOrCreateId("COUNTRY", "country", country);
+        let filePath = null;
+
+        const { data: existingMedia, error: fetchError } = await supabase
+            .from("MEDIA")
+            .select("id, imagen")
+            .eq("nombre", nombre)
+            .single();
+
+        if (fetchError && fetchError.code !== "PGRST116") throw fetchError;
+
+        let mediaId;
+
+        if (imagen instanceof File) {
+        const firstWord = (nombre || "").trim().split(/\s+/)[0] || "file";
+
+        const safeWord = firstWord.normalize("NFKD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-zA-Z0-9-_]/g, "").toLowerCase();
+
+        const fileExt = imagen.name.split(".").pop();
+        const newFileName = `${safeWord}-${Date.now()}.${fileExt}`;
+        const filePath = `Imagenes/${newFileName}`;
+
+        const existingFileName = existingMedia?.imagen?.split("/").pop();
+
+        if (existingFileName && existingFileName !== imagen.name) {
+            const { error: deleteError } = await supabase.storage
+            .from("Imagenes")
+            .remove([existingMedia.imagen]);
+
+            if (deleteError) {
+            console.error("Error deleting previous image:", deleteError);
+            return;
+            }
+        }
+
+        const { error: uploadError } = await supabase.storage
+            .from("Imagenes")
+            .upload(filePath, imagen);
+
+        if (uploadError) {
+            console.error("Error uploading new image:", uploadError);
+            return;
+        }
+        } else if (typeof imagen === "string") {
+            if (imagen.includes("/storage/v1/object/public/")) {
+                const parts = imagen.split("/storage/v1/object/public/Imagenes/");
+                filePath = parts[1];
+            } else {
+                filePath = imagen;
+            }
+        }
+
 
         const newMedia = {
             nombre,
@@ -159,37 +219,57 @@ async function handleSubmit(e) {
             visto,
         };
 
-    const { data, error } = await supabase
-        .from("MEDIA")
-        .insert([newMedia])
-        .select("id")
-        .single();
+        if (existingMedia) {
+        const { error: updateError } = await supabase
+            .from("MEDIA")
+            .update(newMedia)
+            .eq("id", existingMedia.id);
 
-    if (error) throw error;
+        if (updateError) throw updateError;
+        mediaId = existingMedia.id;
+        } else {
+        const { data, error: insertError } = await supabase
+            .from("MEDIA")
+            .insert([newMedia])
+            .select("id")
+            .single();
 
+        if (insertError) throw insertError;
+        mediaId = data.id;
+        } 
+
+    await supabase
+        .from("VISTOS")
+        .delete()
+        .eq("id_media", mediaId);
+
+    await supabase
+        .from("MARCHA")
+        .delete()
+        .eq("id_media", mediaId);
+
+        
     if (visto) {
-        const { error: vistosError } = await supabase
+        await supabase
             .from("VISTOS")
             .insert([{
-            id_media: data.id,
+            id_media: mediaId,
             ultimo_visto: ultimoVisto,
             stars,
             created_at: new Date().toISOString(),
             }]);
-        if (vistosError) throw vistosError;
-    } else {
-        const { error: marchaError } = await supabase
+        } else {
+        await supabase
             .from("MARCHA")
             .insert([{
-            id_media: data.id,
+            id_media: mediaId,
             ultimo_visto: ultimoVisto,
             avance,
             created_at: new Date().toISOString(),
             }]);
-        if (marchaError) throw marchaError;
-    }
+        }
 
-        alert("Registro insertado correctamente");
+        alert(existingMedia ? "Registro actualizado correctamente" : "Registro insertado correctamente");
         navigate("/");
     } catch (err) {
         console.error(err);
@@ -203,6 +283,43 @@ function handleFileChange(event) {
     setImagen(file)
     setPreviewUrl(URL.createObjectURL(file))
 }
+
+async function handleDelete(e){
+    e?.preventDefault();
+
+    const name = (nombre || "").trim();
+    if (!name) {
+        alert("There is no media to delete yet");
+        return;
+    }
+
+    try {
+        const { data, error: fetchError } = await supabase
+        .from("MEDIA")
+        .select("id, nombre")
+        .eq("nombre", name)
+        .single();
+
+    if (fetchError) {
+        console.error("Fetch error:", fetchError);
+        alert("There is no media to delete yet");
+        return;
+    }
+    
+    if (!data) {
+      alert("There is no media to delete yet");
+      return;
+    }
+
+    if (!window.confirm(`Are you sure you want to delete "${data.nombre}"? This cannot be undone.`)) {
+      return;
+    }
+
+
+}catch (err) {
+    console.error("Unexpected error:", err);
+    alert("An unexpected error occurred. Check console.");
+}}
 
 useEffect(() => {
   async function fetchCategorias() {
@@ -367,8 +484,6 @@ return(
                 <label htmlFor='yavisto' className={`pbrs popGlow ${visto === 1 ? "active" : ""}`}><DashboardCustomize width={30} height={30}/>Vistos</label>
             </div>
             <div className='fgff'>
-            
-            
             {visto ? (
                 <React.Fragment>
                     <div className="fltx">Stars: {stars}</div>
@@ -377,7 +492,7 @@ return(
                     <input
                         type="date" 
                         id="Ultimovisto"
-                        className='fbit'
+                        className='fbit popGlow'
                         value={ultimoVisto || ""}
                         onChange={(e) => setUltimoVisto(e.target.value)}
                     />
@@ -397,8 +512,12 @@ return(
                 </React.Fragment>
             )}
             </div>
-            <button type="submit"  className='pbrs popGlow'>Guardar</button>
+            <div className='fgff'>
+                <button type="submit"  className='pbrs popGlow'><Save /></button>
+                <button type="button" className='pbbd popGlow' aria-label="Delete item" onClick={handleDelete}><Delete /></button>
+            </div>
         </form>
+        <footer style={{height: "100px"}}></footer>
     </main>
     </>
 );
