@@ -51,7 +51,7 @@ code {
   padding: 10px;
   justify-items: center;
   justify-content: center;
-  background-image: url('/public/Imagenes/computer_back.jpg')
+  background-image: url('./computer_back.jpg')
 }
 .HeaderForm{
   display: grid;
@@ -62,7 +62,7 @@ code {
   padding: 10px;
   justify-items: center;
   justify-content: center;
-  background-image: url('/public/Imagenes/book_back.jpg')
+  background-image: url('./book_back.jpg')
 }
 .HeaderWelcome{
   grid-column: span 3 / span 3;
