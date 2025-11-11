@@ -268,15 +268,15 @@ code {
   row-gap: 1.5cm;
   box-shadow: 5px 0px 10px 10px rgba(0, 0, 0, 0.4);
   margin: auto;
-  width: 30em;
+/*  width: 30em;*/
 }
 
 .fgty{
   /*Formulario grid para Titulo y Year*/
   display: grid;
-  grid-template-columns: 17em 6em;
+  grid-template-columns: 16em 6em;
   grid-template-rows: repeat(2, 1fr);
-  column-gap: 2em;
+  column-gap: 1em;
   height: 4.2em;
 }
 
@@ -285,7 +285,7 @@ code {
   display: grid;
   grid-template-columns: 11em 11em;
   grid-template-rows: repeat(2, 1fr);
-  column-gap: 3em;
+  column-gap: 1em;
   height: 4.2em;
 }
 
@@ -293,7 +293,7 @@ code {
   /*Formulario separado en dos filas*/
   display: grid;
   grid-template-rows: repeat(2, 1fr);
-  column-gap: 3em;
+  column-gap: 1em;
   height: 4.2em;
 }
 
@@ -302,7 +302,7 @@ code {
   display: grid;
   grid-template-columns: 11em 11em;
   grid-template-rows: auto auto;
-  column-gap: 3em;
+  column-gap: 1em;
   height: auto;
 }
 
