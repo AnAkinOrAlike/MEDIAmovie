@@ -1,70 +1,130 @@
-# Getting Started with Create React App
+# MEDIAmovie
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A responsive web application to track and manage your personal media consumption — movies, series, animation and books — built with React and Supabase.
 
-## Available Scripts
+---
 
-In the project directory, you can run:
+## 📌 Overview
 
-### `npm start`
+MEDIAmovie helps you collect, rate, and track media items across statuses (Want to Watch / Want to Read, Watching / Reading, Watched / Read). It supports custom cover uploads, filtering, and a clean responsive grid layout for all screen sizes.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## 📌 Features
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- Add and organize media items (Movies, Series, Animation, Books)
+- Personal rating system (1–5 stars)
+- Record last seen / read date
+- Track status: Want to Watch / Want to Read, Watching / Reading, Watched / Read
+- Filter and sort by type, genre, year, and status
+- Upload and store cover images via Supabase Storage
+- Assign a custom color to each item
+- Fully responsive grid layout (mobile, tablet, desktop)
 
-### `npm test`
+## 🧰 Tech Stack
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+| Layer      | Technology                                   |
+|------------|----------------------------------------------|
+| Frontend   | React (Create React App)                     |
+| Styling    | CSS (custom + utility classes)               |
+| Backend    | Supabase (PostgreSQL + Storage)              |
+| Language   | JavaScript, CSS, HTML                        |
+| Deployment | Vercel (frontend), Supabase (backend)        |
 
-### `npm run build`
+## 🗃️ Supabase Database Structure
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+**Main tables**
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+| Table      | Purpose                                                  |
+|------------|----------------------------------------------------------|
+| MEDIA      | Stores each media entry (movie, series, book, etc.)      |
+| DIRECTORES | Directors, creators, or authors                          |
+| CATEGORIA  | Genres or categories (action, drama, fantasy, etc.)      |
+| COUNTRY    | Country of origin                                        |
+| COMPAÑIA   | Production company, publisher, or studio                 |
+| VISTOS     | History of completed media                               |
+| MARCHA     | Media currently in progress ("watching/reading")         |
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+**Public Views**
 
-### `npm run eject`
+| View        | Purpose                                                       |
+|-------------|---------------------------------------------------------------|
+| mediavistos | Combined view of completed media with enriched details        |
+| mediamarcha | Combined view of media in progress, useful for tracking state |
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+**Relationships**
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- MEDIA references DIRECTORES, CATEGORIA, COUNTRY, and COMPAÑIA (foreign keys).
+- VISTOS and MARCHA link to MEDIA via id_media.
+- Views like mediavistos and mediamarcha join MEDIA with related tables to present complete records.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+---
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## 🚀 Getting Started (Local)
 
-## Learn More
+Follow these steps to run the project locally.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+1. Clone the repo
+   ```bash
+   git clone https://github.com/AnAkinOrAlike/MEDIAmovie.git
+   cd MEDIAmovie
+   ```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+2. Install dependencies
+   ```bash
+   npm install
+   ```
 
-### Code Splitting
+3. Configure Supabase
+   - Create a project at https://supabase.com.
+   - Create the tables (you can use SQL migrations or the Supabase Table Editor).
+   - Set up Supabase Storage for cover images and create a bucket.
+   - Copy your Supabase project URL and ANON key from Project Settings → API.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+4. Environment variables
+   - Create a .env file in the project root and add:
+     ```env
+     REACT_APP_SUPABASE_URL=https://your-project.supabase.co
+     REACT_APP_SUPABASE_ANON_KEY=your-anon-key
+     ```
+   - Restart the dev server after changing env vars.
 
-### Analyzing the Bundle Size
+5. Run the app
+   ```bash
+   npm start
+   ```
+   Open http://localhost:3000 to view the app.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+## 📦 Build & Test
 
-### Making a Progressive Web App
+- Build for production:
+  ```bash
+  npm run build
+  ```
+- Run tests:
+  ```bash
+  npm test
+  ```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+## 🚢 Deployment
 
-### Advanced Configuration
+- Frontend: Deploy the build folder to Vercel, Netlify, or similar. Add REACT_APP_SUPABASE_* env vars in the hosting settings.
+- Backend: Use Supabase hosting for your production database and storage. Migrate schema and data as needed.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+## ♻️ Contributing
 
-### Deployment
+Contributions are welcome. Suggested workflow:
+- Open an issue to discuss larger changes.
+- Create a branch for your feature or fix.
+- Submit a pull request with a clear description and testing notes.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+Please include `npm test` results and any migration SQL if you modify the database schema.
 
-### `npm run build` fails to minify
+## 🧾 License
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+MIT — see LICENSE
+
+## 🙏 Acknowledgements
+
+- Project scaffolded with Create React App.
+- Backend powered by Supabase (Postgres + Storage).
+
+---
