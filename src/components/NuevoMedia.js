@@ -432,7 +432,7 @@ return(
                     value={year|| ''}
                     required
                     onChange={(e) => setYear(e.target.value)}
-                    placeholder=' _ _ _ _ |'
+                    placeholder=' _ _ |'
                 />
             </div>
             <div className='fgff'>

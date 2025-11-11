@@ -25,7 +25,7 @@ export default function ListaParaVer() {
         if (errorVistos) throw errorVistos;
         if (errorMarcha) throw errorMarcha;
 
-        const combined = [...(vistos || []), ...(marcha || [])];
+        const combined = [...(marcha || []), ...(vistos || [])];
 
         combined.forEach(item => {
             const { data } = supabase.storage.from("Imagenes").getPublicUrl(item.imagen);
