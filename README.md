@@ -86,28 +86,18 @@ MEDIAmovie/
 │   ├── index.html
 │   └── favicon.ico
 ├── src/
-│   ├── assets/                 # images, icons, fonts
 │   ├── components/             # reusable UI components
-│   │   ├── MediaCard.jsx
-│   │   ├── MediaList.jsx
-│   │   └── Header.jsx
-│   ├── pages/                  # page-level components / views
-│   │   ├── Home.jsx
-│   │   ├── AddMedia.jsx
-│   │   └── Details.jsx
-│   ├── services/               # API / Supabase client wrappers
-│   │   └── supabase.js
+│   │   ├── ListaParaVer.jsx
+│   │   └── NuevoMedia.jsx
+│   ├── supabase.js             # API / Supabase client wrappers
 │   ├── hooks/                  # custom React hooks
 │   ├── utils/                  # helper functions
-│   ├── styles/                 # global styles and variables
-│   │   └── main.css
+│   ├── main.css                # global styles and variables
 │   ├── index.js
 │   └── App.js
 ├── scripts/                    # optional build / dev scripts
 ├── .env                        # local env vars (not committed)
-├── package.json
-├── README.md
-└── LICENSE
+└── package.json
 ```
 
 ## 🗃️ Supabase Database Structure
@@ -138,6 +128,16 @@ MEDIAmovie/
 - Views like mediavistos and mediamarcha join MEDIA with related tables to present complete records.
 
 ---
+
+## 🧪 Future Improvements
+
+Planned or suggested enhancements to consider for upcoming iterations:
+
+- 📊 Dashboard with personal metrics (total time watched, top genres)
+- 🔍 Search and sort functionality
+- 📤 CSV export/import
+- 🧠 Smart recommendations by genre or creator
+- 🔐 Optional user authentication
 
 ## ♻️ Contributing
 
