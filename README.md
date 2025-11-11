@@ -29,35 +29,6 @@ MEDIAmovie helps you collect, rate, and track media items across statuses (Want 
 | Language   | JavaScript, CSS, HTML                        |
 | Deployment | Vercel (frontend), Supabase (backend)        |
 
-## 🗃️ Supabase Database Structure
-
-**Main tables**
-
-| Table      | Purpose                                                  |
-|------------|----------------------------------------------------------|
-| MEDIA      | Stores each media entry (movie, series, book, etc.)      |
-| DIRECTORES | Directors, creators, or authors                          |
-| CATEGORIA  | Genres or categories (action, drama, fantasy, etc.)      |
-| COUNTRY    | Country of origin                                        |
-| COMPAÑIA   | Production company, publisher, or studio                 |
-| VISTOS     | History of completed media                               |
-| MARCHA     | Media currently in progress ("watching/reading")         |
-
-**Public Views**
-
-| View        | Purpose                                                       |
-|-------------|---------------------------------------------------------------|
-| mediavistos | Combined view of completed media with enriched details        |
-| mediamarcha | Combined view of media in progress, useful for tracking state |
-
-**Relationships**
-
-- MEDIA references DIRECTORES, CATEGORIA, COUNTRY, and COMPAÑIA (foreign keys).
-- VISTOS and MARCHA link to MEDIA via id_media.
-- Views like mediavistos and mediamarcha join MEDIA with related tables to present complete records.
-
----
-
 ## 🚀 Getting Started (Local)
 
 Follow these steps to run the project locally.
@@ -104,10 +75,69 @@ Follow these steps to run the project locally.
   npm test
   ```
 
-## 🚢 Deployment
+## 📁 Folder structure
 
-- Frontend: Deploy the build folder to Vercel, Netlify, or similar. Add REACT_APP_SUPABASE_* env vars in the hosting settings.
-- Backend: Use Supabase hosting for your production database and storage. Migrate schema and data as needed.
+A suggested overview of the repository layout and important files — adjust to your actual structure if it differs.
+
+```
+MEDIAmovie/
+├── .github/                    # CI, issue templates, workflows (optional)
+├── public/
+│   ├── index.html
+│   └── favicon.ico
+├── src/
+│   ├── assets/                 # images, icons, fonts
+│   ├── components/             # reusable UI components
+│   │   ├── MediaCard.jsx
+│   │   ├── MediaList.jsx
+│   │   └── Header.jsx
+│   ├── pages/                  # page-level components / views
+│   │   ├── Home.jsx
+│   │   ├── AddMedia.jsx
+│   │   └── Details.jsx
+│   ├── services/               # API / Supabase client wrappers
+│   │   └── supabase.js
+│   ├── hooks/                  # custom React hooks
+│   ├── utils/                  # helper functions
+│   ├── styles/                 # global styles and variables
+│   │   └── main.css
+│   ├── index.js
+│   └── App.js
+├── scripts/                    # optional build / dev scripts
+├── .env                        # local env vars (not committed)
+├── package.json
+├── README.md
+└── LICENSE
+```
+
+## 🗃️ Supabase Database Structure
+
+**Main tables**
+
+| Table      | Purpose                                                  |
+|------------|----------------------------------------------------------|
+| MEDIA      | Stores each media entry (movie, series, book, etc.)      |
+| DIRECTORES | Directors, creators, or authors                          |
+| CATEGORIA  | Genres or categories (action, drama, fantasy, etc.)      |
+| COUNTRY    | Country of origin                                        |
+| COMPAÑIA   | Production company, publisher, or studio                 |
+| VISTOS     | History of completed media                               |
+| MARCHA     | Media currently in progress ("watching/reading")         |
+
+**Public Views**
+
+| View        | Purpose                                                       |
+|-------------|---------------------------------------------------------------|
+| mediavistos | Combined view of completed media with enriched details        |
+| mediamarcha | Combined view of media in progress, useful for tracking state |
+
+**Relationships**
+
+- MEDIA references DIRECTORES, CATEGORIA, COUNTRY, and COMPAÑIA (foreign keys).
+- VISTOS and MARCHA link to MEDIA via id_media.
+- Views like mediavistos and mediamarcha join MEDIA with related tables to present complete records.
+
+---
 
 ## ♻️ Contributing
 

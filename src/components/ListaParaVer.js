@@ -11,7 +11,7 @@ export default function ListaParaVer() {
     const [media, setMedia] = useState([]);
     const [theme, setTheme] = useState('light');
     const navigate = useNavigate();
-    const main_limite = 10;
+    const main_limite = 50;
 
     const fetchData = async () => {
         const { data: vistos, error: errorVistos } = await supabase
@@ -39,9 +39,9 @@ export default function ListaParaVer() {
             .map((obj) => obj.value);
         }
 
-        const randomized = shuffle(combined);
-        setMedia(randomized);
-        /*setMedia(combined);*/
+        /*const randomized = shuffle(combined);
+        setMedia(randomized);*/
+        setMedia(combined);
     };
 
     function GridItem({ media }) {
