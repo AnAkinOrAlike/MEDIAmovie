@@ -39,8 +39,8 @@ export default function ListaParaVer() {
             .map((obj) => obj.value);
         }
 
-        /*const randomized = shuffle(combined);
-        setMedia(randomized);*/
+        const randomized = shuffle(combined);
+        setMedia(randomized);
         setMedia(combined);
     };
 
