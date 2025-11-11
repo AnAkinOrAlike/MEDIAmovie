@@ -173,20 +173,32 @@ async function handleSubmit(e) {
 
         const fileExt = imagen.name.split(".").pop();
         const newFileName = `${safeWord}-${Date.now()}.${fileExt}`;
-        const filePath = `Imagenes/${newFileName}`;
+        filePath = `Imagenes/${newFileName}`;
 
         const existingFileName = existingMedia?.imagen?.split("/").pop();
+        
 
         if (existingFileName && existingFileName !== imagen.name) {
+        console.log("Deleting old image:", existingMedia.imagen);
+        const { data: newphoto} = await supabase
+            .from("MEDIA")
+            .select("imagen")
+            .eq("imagen", [existingMedia.imagen]);
+        
+        if(newphoto.lenght < 2){
             const { error: deleteError } = await supabase.storage
             .from("Imagenes")
             .remove([existingMedia.imagen]);
 
-            if (deleteError) {
+        if (deleteError) {
             console.error("Error deleting previous image:", deleteError);
             return;
-            }
-        }
+        }}}
+
+        if (!filePath) {
+        console.warn("No valid filePath was set for imagen");
+        return;
+        } console.log("imagen type:", typeof imagen, imagen instanceof File);
 
         const { error: uploadError } = await supabase.storage
             .from("Imagenes")
@@ -204,7 +216,6 @@ async function handleSubmit(e) {
                 filePath = imagen;
             }
         }
-
 
         const newMedia = {
             nombre,
@@ -278,15 +289,15 @@ async function handleSubmit(e) {
 }
 
 function handleFileChange(event) {
-    if (!event.target.files || event.target.files.length === 0) return
-    const file = event.target.files[0]
-    setImagen(file)
-    setPreviewUrl(URL.createObjectURL(file))
+    if (!event.target.files || event.target.files.length === 0) return;
+    const file = event.target.files[0];
+    setImagen(file);
+    setPreviewUrl(URL.createObjectURL(file));
 }
 
 async function handleDelete(e){
     e?.preventDefault();
-
+    console.log(imagen);
     const name = (nombre || "").trim();
     if (!name) {
         alert("There is no media to delete yet");
@@ -296,10 +307,10 @@ async function handleDelete(e){
     try {
         const { data, error: fetchError } = await supabase
         .from("MEDIA")
-        .select("id, nombre")
+        .select("id, nombre, imagen")
         .eq("nombre", name)
         .single();
-
+    
     if (fetchError) {
         console.error("Fetch error:", fetchError);
         alert("There is no media to delete yet");
@@ -311,11 +322,57 @@ async function handleDelete(e){
       return;
     }
 
+    const { data: imagdata, error: imagError } = await supabase
+        .from("MEDIA")
+        .select("imagen")
+        .eq("imagen", data.imagen);
+    
+        if (imagError) {
+        console.error("Fetch error:", imagError);
+        alert("There is no media to delete yet");
+        return;
+        }
+    
+        console.log(imagdata)
+
     if (!window.confirm(`Are you sure you want to delete "${data.nombre}"? This cannot be undone.`)) {
       return;
     }
 
+    if(imagdata < 2){
+    const relativePath = data.imagen.replace(`Imagenes/`, "");
+    const { error: storageError } = await supabase.storage
+    .from('Imagenes')
+    .remove([relativePath]);
 
+    if (storageError) {
+    console.warn("Storage deletion failed:", storageError);
+    }
+    }
+
+    const { error: deleteError } = await supabase
+      .from("MEDIA")
+      .delete()
+      .eq("id", data.id);
+
+    if (deleteError) {
+      console.error("Delete error:", deleteError);
+      alert("Failed to delete item. See console for details.");
+      return;
+    }
+
+    await supabase
+        .from("VISTOS")
+        .delete()
+        .eq("id_media", data.id);
+
+    await supabase
+        .from("MARCHA")
+        .delete()
+        .eq("id_media", data.id);
+
+    alert(`"${data.nombre}" deleted successfully.`);
+    navigate("/");
 }catch (err) {
     console.error("Unexpected error:", err);
     alert("An unexpected error occurred. Check console.");
