@@ -13,6 +13,27 @@ code {
     monospace;
 }
 
+
+/*Faulty terminal background*/
+.faulty-terminal-container {
+  width: 100% !important;
+  height: 100% !important;
+  position: relative;
+  overflow: hidden;
+}
+
+.faulty-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+}
+
+.pageContent {
+  position: relative;
+  z-index: 1;
+}
+
+
 /*Dark and Light Mode*/
 :root {
   color: #242424; 
@@ -109,6 +130,7 @@ code {
 /*--*/
 
 .divider {
+  color: #ffffff;
   display: flex;
   align-items: center;
   text-align: center;
@@ -144,6 +166,8 @@ code {
 
 .gridvisto {
   /*Grid para registros vistos*/
+  backdrop-filter: blur(4px);
+  background: #ffffff6b;
   border: 4px #000 solid;
   height: 6cm;
   width: 10cm;
