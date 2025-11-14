@@ -6,6 +6,7 @@ import { useState, useEffect } from 'react';
 import { supabase } from '../supabase.js';
 import { LibraryAdd, DarkMode, Visibility, Planet, MotionPlay } from '@nine-thirty-five/material-symbols-react/sharp';
 import { BookmarkHeart } from "@nine-thirty-five/material-symbols-react/sharp/filled";
+import FaultyTerminal from '../FaultyTerminal';
 
 export default function ListaParaVer() {
     const [media, setMedia] = useState([]);
@@ -144,24 +145,49 @@ export default function ListaParaVer() {
 
     return (
     <>
-    <header className='HeaderLista'>
-        <div className="HeaderWelcome"> ¡BIENVENIDO A MI PROGRAMA!</div>
-        <button className="HeaderButtons popGlow active"> <Visibility height={40} width={40}/> </button>
-        <button className="HeaderButtons popGlow" onClick={() => navigate("/nuevo")}> <LibraryAdd height={40} width={40}/></button>
-        <button className={`HeaderButtons popGlow ${theme === "dark" ? "active" : ""}`} onClick={toggleTheme}> <DarkMode height={40} width={40}/></button>
-        <div className="HeaderLabels"> Lista para Ver</div>
-        <div className="HeaderLabels"> Añadir Nuevo</div>
-        <div className="HeaderLabels"> Modo Oscuro</div>
-    </header>
-    <main>
-        <span className="divider">Media</span>
-        <div className='flexTable'>
-        {media.slice(0, main_limite).map((item, index) => (
-        <GridItem key={index} media={item} />
-        ))}
+    <div className="faulty-bg" aria-hidden="true">
+        <div className="faulty-terminal-container">
+            <FaultyTerminal
+                scale={5}
+                gridMul={[1, 3]}
+                digitSize={1.2}
+                timeScale={2}
+                pause={false}
+                scanlineIntensity={1}
+                glitchAmount={1}
+                flickerAmount={1}
+                noiseAmp={1}
+                chromaticAberration={1}
+                dither={0.1}
+                curvature={0.2}
+                tint="#3078fc"
+                mouseReact={false}
+                mouseStrength={0}
+                pageLoadAnimation={true}
+                brightness={1}
+            />
         </div>
-    </main>
-    <footer style={{height: "100px"}}></footer>
+    </div>
+    <div className="pageContent">
+        <header className='HeaderLista'>
+            <div className="HeaderWelcome"> ¡BIENVENIDO A MI PROGRAMA!</div>
+            <button className="HeaderButtons popGlow active"> <Visibility height={40} width={40}/> </button>
+            <button className="HeaderButtons popGlow" onClick={() => navigate("/nuevo")}> <LibraryAdd height={40} width={40}/></button>
+            <button className={`HeaderButtons popGlow ${theme === "dark" ? "active" : ""}`} onClick={toggleTheme}> <DarkMode height={40} width={40}/></button>
+            <div className="HeaderLabels"> Lista para Ver</div>
+            <div className="HeaderLabels"> Añadir Nuevo</div>
+            <div className="HeaderLabels"> Modo Oscuro</div>
+        </header>
+        <main>
+            <span className="divider">Media</span>
+            <div className='flexTable'>
+            {media.slice(0, main_limite).map((item, index) => (
+            <GridItem key={index} media={item} />
+            ))}
+            </div>
+        </main>
+        <footer style={{height: "100px"}}></footer>
+      </div>
     </>
 )
 }
