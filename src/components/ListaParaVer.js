@@ -4,13 +4,14 @@ import '../main.css';
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from 'react';
 import { supabase } from '../supabase.js';
-import { LibraryAdd, DarkMode, Visibility, Planet, MotionPlay, Search, BookmarkFlag, BookmarkStar } from '@nine-thirty-five/material-symbols-react/sharp';
+import { LibraryAdd, DarkMode, Visibility, Planet, MotionPlay, Search, BookmarkFlag, BookmarkStar, BookmarkStacks } from '@nine-thirty-five/material-symbols-react/sharp';
 import { BookmarkHeart } from "@nine-thirty-five/material-symbols-react/sharp/filled";
 
 export default function ListaParaVer() {
     const [media, setMedia] = useState([]);
     const [theme, setTheme] = useState('light');
     const [query, setQuery] = useState('');
+    const [filterMode, setFilterMode] = useState('all');
     const [debouncedQuery, setDebouncedQuery] = useState('');
     const navigate = useNavigate();
     const main_limite = 50;
@@ -20,10 +21,17 @@ export default function ListaParaVer() {
         return () => clearTimeout(handler);
     }, [query]);
 
-    const fetchData = async (q) => {
+    const fetchData = async (q, filter) => {
         try {
-            let queryVistos = supabase.from("mediavistos").select("*");
-            let queryMarcha = supabase.from("mediamarcha").select("*");
+            let queryVistos = null;
+            let queryMarcha = null;
+
+            if (filter === 'all' || filter === 'vistos') {
+                queryVistos = supabase.from("mediavistos").select("*");
+            }
+            if (filter === 'all' || filter === 'marcha') {
+                queryMarcha = supabase.from("mediamarcha").select("*");
+            }
 
             if (q && q.length > 0) {
                 const orString = `nombre.ilike.%${q}%,director.ilike.%${q}%,compania.ilike.%${q}%,categoria.ilike.%${q}%`;
@@ -154,7 +162,7 @@ export default function ListaParaVer() {
     };
 
     useEffect(() => {
-        fetchData();
+        fetchData('', filterMode);
     }, []); 
 
     useEffect(() => {
@@ -162,8 +170,8 @@ export default function ListaParaVer() {
     }, [theme]);
 
     useEffect(() => {
-        fetchData(debouncedQuery);
-    }, [debouncedQuery]);
+        fetchData(debouncedQuery, filterMode);
+    }, [debouncedQuery, filterMode]);
 
     return (
     <>
@@ -179,17 +187,21 @@ export default function ListaParaVer() {
     <main>
         <span className="divider">Media</span>
         <div className="flexQuery">
-        <Search height="40" width="40" fill="#3551a9"/>
-        <input
-            className="queryInput"
-            type="text"
-            id="query"
-            placeholder="Buscar por título, director, compañía, categoría..."
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-        />
-        <button className="queryButtons"> <BookmarkFlag height={40} width={40}/></button>
-        <button className="queryButtons"> <BookmarkStar height={40} width={40}/></button>
+            <Search height="40" width="40" fill="#3551a9"/>
+
+            <input className="queryInput" type="text" id="query" value={query}
+                placeholder="Buscar por título, director, compañía, categoría..."
+                onChange={(e) => setQuery(e.target.value)}/>
+
+            <button className={`queryButtons ${filterMode === 'marcha' ? 'active' : ''}`} 
+                title="Marcha" 
+                onClick={() => setFilterMode(prev => prev === 'marcha' ? 'all' : 'marcha')}>
+            <BookmarkFlag height={40} width={40}/></button>
+
+            <button className={`queryButtons ${filterMode === 'vistos' ? 'active' : ''}`}
+                title="Vistos"
+                onClick={() => setFilterMode(prev => prev === 'vistos' ? 'all' : 'vistos')}> 
+            <BookmarkStar height={40} width={40}/></button>
         </div>
         <div className='flexTable'>
         {media.slice(0, main_limite).map((item, index) => (

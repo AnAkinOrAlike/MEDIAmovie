@@ -156,8 +156,7 @@ code {
   align-items: center;
   background-color: transparent;
   color: inherit;
-  border-color: white;
-  border: unset;
+  border: solid 3px #6495ed;
   border-radius: 5px;
   height: 4em;
   margin: 1em;
@@ -169,7 +168,7 @@ code {
 .queryButtons.active , .queryButtons:active {
   background-color: #3551a9;
   color: #fff;
-  border-color: #ccc;
+  border-color: #00000000;
 }
 
 .queryLabels{
