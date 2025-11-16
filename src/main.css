@@ -15,7 +15,7 @@ code {
 
 /*Dark and Light Mode*/
 :root {
-  color: #242424; 
+  color: #242424;
 }
 
 .dark {
@@ -30,7 +30,7 @@ code {
 
 .popGlow:hover{
   transform: scale(1.2);
-  box-shadow: 0px 0px 10px 0px #000;
+  box-shadow: 0px 0px 10px 0px #00000050;
   border-radius: 50px;
   cursor: pointer;
 }
@@ -89,7 +89,7 @@ code {
   height: 5em;
   width: 5em;
   text-align: center;
-  transition: all 0.5s cubic-bezier(1, -0.01, 0, 1.53) 100ms;
+  transition: all 0.5s cubic-bezier(0, 2.67, 1, 3.01) 100ms;
 }
 
 .HeaderButtons.active , .HeaderButtons:active {
@@ -130,21 +130,73 @@ code {
   margin-left: 3em;
 }
 
+/*--*/
+
+.flexQuery{
+  display: flex;
+  gap: 10px;
+  padding-bottom: 40px;
+  justify-content: center;
+  align-items: center;
+}
+
+.queryInput {
+  width: 70%;
+  height: 4em;
+  border: unset;
+  border-radius: 5px;
+  padding: 0px 8px;
+  background: linear-gradient(160deg, #8fb8ff, #062286d7) 0 0 / 100% 25%;
+  color: #000;
+}
+
+.queryButtons{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: transparent;
+  color: inherit;
+  border-color: white;
+  border: unset;
+  border-radius: 5px;
+  height: 4em;
+  margin: 1em;
+  width: 4em;
+  text-align: center;
+  transition: all 0.5s cubic-bezier(0, 2.67, 1, 3.01) 100ms;
+}
+
+.queryButtons.active , .queryButtons:active {
+  background-color: #3551a9;
+  color: #fff;
+  border-color: #ccc;
+}
+
+.queryLabels{
+  grid-row-start: 3;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bolder;
+  text-align: center;
+  font-size: x-small;
+}
+
 /*Grids de media*/
 
 .flexTable{
   /*Flex para los grids de media*/
-  padding: 4px;
   display: flex;
   justify-content: space-around;
   flex-wrap: wrap;
-  margin: 10px;
+  margin: auto;
   align-items: center;
 }
 
 .gridvisto {
   /*Grid para registros vistos*/
-  border: 4px #000 solid;
+  backdrop-filter: blur(4px);
+  background: #ffffff6b;
   height: 6cm;
   width: 10cm;
   max-width: 10cm;
@@ -167,6 +219,7 @@ code {
   font-size: 1.4em;
   font-family: 'Unispace';
   border-top-left-radius: 14px;
+  background: linear-gradient(0deg, var(--main-color), #3b3b3b) 0 0 / 50% 100%;
 }
 .rhyr{
   /*Row Head Year*/
@@ -179,6 +232,7 @@ code {
   text-align: center;
   align-content: center;
   grid-column: 3 / span 2;
+  background: linear-gradient(0deg, var(--main-color), #3b3b3b) 0 0 / 50% 100%;
   grid-row: 1;
   color: #fff;
   font-family: 'Bahnschrift', sans-serif;
@@ -224,7 +278,7 @@ code {
   height: 112px;
   width: 112px;
   border-radius: 15%;
-  transition: all 0.5s cubic-bezier(1, -0.01, 0, 1.53) 100ms;
+  transition: all 0.5s cubic-bezier(0, 2.67, 1, 3.01) 100ms;
 }
 
 .gr1f{

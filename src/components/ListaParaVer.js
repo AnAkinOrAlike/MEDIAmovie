@@ -4,32 +4,48 @@ import '../main.css';
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from 'react';
 import { supabase } from '../supabase.js';
-import { LibraryAdd, DarkMode, Visibility, Planet, MotionPlay } from '@nine-thirty-five/material-symbols-react/sharp';
+import { LibraryAdd, DarkMode, Visibility, Planet, MotionPlay, Search, BookmarkFlag, BookmarkStar } from '@nine-thirty-five/material-symbols-react/sharp';
 import { BookmarkHeart } from "@nine-thirty-five/material-symbols-react/sharp/filled";
 
 export default function ListaParaVer() {
     const [media, setMedia] = useState([]);
     const [theme, setTheme] = useState('light');
+    const [query, setQuery] = useState('');
+    const [debouncedQuery, setDebouncedQuery] = useState('');
     const navigate = useNavigate();
     const main_limite = 50;
 
-    const fetchData = async () => {
-        const { data: vistos, error: errorVistos } = await supabase
-        .from("mediavistos")
-        .select("*");
+    useEffect(() => {
+        const handler = setTimeout(() => setDebouncedQuery(query.trim()), 300);
+        return () => clearTimeout(handler);
+    }, [query]);
 
-        const { data: marcha, error: errorMarcha } = await supabase
-        .from("mediamarcha")
-        .select("*");
+    const fetchData = async (q) => {
+        try {
+            let queryVistos = supabase.from("mediavistos").select("*");
+            let queryMarcha = supabase.from("mediamarcha").select("*");
 
-        if (errorVistos) throw errorVistos;
-        if (errorMarcha) throw errorMarcha;
+            if (q && q.length > 0) {
+                const orString = `nombre.ilike.%${q}%,director.ilike.%${q}%,compania.ilike.%${q}%,categoria.ilike.%${q}%`;
+                queryVistos = queryVistos.or(orString);
+                queryMarcha = queryMarcha.or(orString);
+            }
+
+            const { data: vistos, error: errorVistos } = await queryVistos;
+            const { data: marcha, error: errorMarcha } = await queryMarcha;
+
+            if (errorVistos) throw errorVistos;
+            if (errorMarcha) throw errorMarcha;
 
         const combined = [...(marcha || []), ...(vistos || [])];
 
         combined.forEach(item => {
-            const { data } = supabase.storage.from("Imagenes").getPublicUrl(item.imagen);
-            item.imagen = data.publicUrl;
+            try {
+                const { data } = supabase.storage.from("Imagenes").getPublicUrl(item.imagen);
+                item.imagen = data?.publicUrl || logo;
+            } catch (e) {
+                item.imagen = logo;
+            }
         });
 
         function shuffle(arr) {
@@ -42,6 +58,9 @@ export default function ListaParaVer() {
         const randomized = shuffle(combined);
         setMedia(randomized);
         setMedia(combined);
+    } catch (err) {
+            console.error("Error fetching media:", err);
+        }
     };
 
     function GridItem({ media }) {
@@ -52,14 +71,14 @@ export default function ListaParaVer() {
         };
         return (
         <div className="gridvisto" style={{ "--main-color": mainColor }}>
-            <div className="ghti" id="headline" style={{ backgroundColor: mainColor }}> {media?.nombre || "..."}
+            <div className="ghti" id="headline"> {media?.nombre || "..."}
             <div className="rhyr">                                                      <Planet height={20} width={20} viewBox="0 -1100 900 900" className="over"/>
                                                                                         {media?.year || "..."}{" "}
                                                                                         <MotionPlay height={20} width={20} viewBox="0 -1100 900 900" className="over"/>
                                                                                         {media?.duracion || "..."}{" "}{media?.typedur || "..."}
             </div></div>
 
-            <div className="ghbs" style={{ backgroundColor: mainColor }}>              <GridHeaderBoxSmall media={media} rating={rating} mainColor={mainColor} />
+            <div className="ghbs">                                                      <GridHeaderBoxSmall media={media} rating={rating} mainColor={mainColor} />
             </div>
 
             <div className="gbim">                                                      <img className="bima popGlow" src={media?.imagen || logo} alt="logo" />
@@ -142,6 +161,10 @@ export default function ListaParaVer() {
         document.body.className = theme;
     }, [theme]);
 
+    useEffect(() => {
+        fetchData(debouncedQuery);
+    }, [debouncedQuery]);
+
     return (
     <>
     <header className='HeaderLista'>
@@ -155,6 +178,19 @@ export default function ListaParaVer() {
     </header>
     <main>
         <span className="divider">Media</span>
+        <div className="flexQuery">
+        <Search height="40" width="40" fill="#3551a9"/>
+        <input
+            className="queryInput"
+            type="text"
+            id="query"
+            placeholder="Buscar por título, director, compañía, categoría..."
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+        />
+        <button className="queryButtons"> <BookmarkFlag height={40} width={40}/></button>
+        <button className="queryButtons"> <BookmarkStar height={40} width={40}/></button>
+        </div>
         <div className='flexTable'>
         {media.slice(0, main_limite).map((item, index) => (
         <GridItem key={index} media={item} />
