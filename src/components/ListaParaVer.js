@@ -39,11 +39,20 @@ export default function ListaParaVer() {
                 queryMarcha = queryMarcha.or(orString);
             }
 
-            const { data: vistos, error: errorVistos } = await queryVistos;
-            const { data: marcha, error: errorMarcha } = await queryMarcha;
+        let vistos = [];
+        let marcha = [];
 
-            if (errorVistos) throw errorVistos;
-            if (errorMarcha) throw errorMarcha;
+        if (queryVistos) {
+            const { data, error } = await queryVistos;
+            if (error) throw error;
+            vistos = data || [];
+            }
+
+            if (queryMarcha) {
+            const { data, error } = await queryMarcha;
+            if (error) throw error;
+            marcha = data || [];
+            }
 
         const combined = [...(marcha || []), ...(vistos || [])];
 
@@ -191,7 +200,7 @@ export default function ListaParaVer() {
 
             <input className="queryInput" type="text" id="query" value={query}
                 placeholder="Buscar por título, director, compañía, categoría..."
-                onChange={(e) => setQuery(e.target.value)}/>
+                onChange={(e) => { setQuery(e.target.value); setFilterMode('all'); }}/>
 
             <button className={`queryButtons ${filterMode === 'marcha' ? 'active' : ''}`} 
                 title="Marcha" 
