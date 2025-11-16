@@ -1,10 +1,9 @@
-import React from "react";
 import logo from '../logo.svg';
 import '../main.css';
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from 'react';
 import { supabase } from '../supabase.js';
-import { LibraryAdd, DarkMode, Visibility, Planet, MotionPlay, Search, BookmarkFlag, BookmarkStar, BookmarkStacks } from '@nine-thirty-five/material-symbols-react/sharp';
+import { LibraryAdd, DarkMode, Visibility, Planet, MotionPlay, Search, BookmarkFlag, BookmarkStar } from '@nine-thirty-five/material-symbols-react/sharp';
 import { BookmarkHeart } from "@nine-thirty-five/material-symbols-react/sharp/filled";
 
 export default function ListaParaVer() {
