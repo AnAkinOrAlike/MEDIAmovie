@@ -2,11 +2,15 @@
 
 A responsive web application to track and manage your personal media consumption — movies, series, animation and books — built with React and Supabase.
 
----
+## 🎟 Badges
+
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](#license) ![JS](https://img.shields.io/badge/language-JavaScript-yellow) ![CSS](https://img.shields.io/badge/style-CSS-blue)
 
 ## 📌 Overview
 
-MEDIAmovie helps you collect, rate, and track media items across statuses (Want to Watch / Want to Read, Watching / Reading, Watched / Read). It supports custom cover uploads, filtering, and a clean responsive grid layout for all screen sizes.
+MEDIAmovie helps you collect, rate, and track media items across statuses (Want to Watch / Want to Read, Watching / Reading, Watched / Read). It supports custom cover uploads, filtering, and a clean responsive UI for mobile and desktop.
+
+Last Release: [text](https://github.com/AnAkinOrAlike/MEDIAmovie/releases/tag/alpha-0.2.0)
 
 ## 📌 Features
 
@@ -18,6 +22,7 @@ MEDIAmovie helps you collect, rate, and track media items across statuses (Want 
 - Upload and store cover images via Supabase Storage
 - Assign a custom color to each item
 - Fully responsive grid layout (mobile, tablet, desktop)
+- Query system, with filters
 
 ## 🧰 Tech Stack
 
@@ -134,10 +139,10 @@ MEDIAmovie/
 Planned or suggested enhancements to consider for upcoming iterations:
 
 - 📊 Dashboard with personal metrics (total time watched, top genres)
-- 🔍 Search and sort functionality
 - 📤 CSV export/import
 - 🧠 Smart recommendations by genre or creator
 - 🔐 Optional user authentication
+- 🎞 Translation into TypeScript
 
 ## ♻️ Contributing
 
