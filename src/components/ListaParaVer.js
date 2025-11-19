@@ -8,7 +8,7 @@ import { BookmarkHeart } from "@nine-thirty-five/material-symbols-react/sharp/fi
 
 export default function ListaParaVer() {
     const [media, setMedia] = useState([]);
-    const [theme, setTheme] = useState('light');
+    const [theme, setTheme] = useState('dark');
     const [query, setQuery] = useState('');
     const [filterMode, setFilterMode] = useState('all');
     const [debouncedQuery, setDebouncedQuery] = useState('');

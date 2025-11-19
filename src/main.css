@@ -146,7 +146,7 @@ code {
   border: unset;
   border-radius: 5px;
   padding: 0px 8px;
-  background: linear-gradient(160deg, #8fb8ff, #062286d7) 0 0 / 100% 25%;
+  background: linear-gradient(90deg, #8fb8ff, #062286d7) 0 0 / 100% 100%;
   color: #000;
 }
 
@@ -397,7 +397,7 @@ code {
   border-radius: 5px;
   padding: 0px 8px;
   color: #fff;
-  transition: all 0.5s cubic-bezier(1, -0.01, 0, 1.53) 100ms;
+  transition: all 0.5s cubic-bezier(0.38, 0.46, 0.59, 1.14) 100ms;
 }
 
 .fbit{
@@ -408,30 +408,31 @@ code {
   padding: 0px 8px;
   background-color: transparent;
   color: inherit;
-  transition: all 0.5s cubic-bezier(1, -0.01, 0, 1.53) 100ms;
+  transition: all 0.5s cubic-bezier(0.38, 0.46, 0.59, 1.14) 100ms;
 }
 
 .fbii{
   /*Formulario box de imagen input*/
-  height: 11em;
-  width: 11em;
+  height: 10em;
+  width: 10em;
+  z-index: 1;
   border-radius: 10px;
-  transition: all 0.5s cubic-bezier(1, -0.01, 0, 1.53) 100ms;
+  transition: all 0.5s cubic-bezier(0.38, 0.46, 0.59, 1.14) 100ms;
 }
 
 .fbci{
   /*Formulario box de color input*/
-  height: 13em;
-  width: 13em;
-  border-radius: 10px;
-  appearance: none;
-  -moz-appearance: none;
-  -webkit-appearance: none;
+  display: flex;
+  align-self: center;
+  padding: 4em;
+  margin: 1.8em;
+  width: 10em;
+  height: 10em;
+  border-radius: 100px;
   background: var(--colorHex);;
-  padding: 0;
   cursor: pointer;
   border: 0;
-  transition: all 0.5s cubic-bezier(1, -0.01, 0, 1.53) 100ms;
+  transition: all 0.5s cubic-bezier(0.38, 0.46, 0.59, 1.14) 100ms;
 }
 
 .flib{
@@ -442,9 +443,8 @@ code {
   position: absolute;
   width: 3em;
   height: 3em;
-  color: #000;
   border: 2px solid #3551a9;
-  transition: all 0.5s cubic-bezier(1, -0.01, 0, 1.53) 100ms;
+  transition: all 0.5s cubic-bezier(0.38, 0.46, 0.59, 1.14) 100ms;
 }
 
 .pbrs{
@@ -458,7 +458,7 @@ code {
   font-size: larger;
   align-content: center;
   color: #fff;
-  transition: all 0.5s cubic-bezier(1, -0.01, 0, 1.53) 100ms;
+  transition: all 0.5s cubic-bezier(0.38, 0.46, 0.59, 1.14) 100ms;
 }
 
 .pbrs:active, .pbrs.active, .pbrs:hover{
@@ -514,6 +514,6 @@ code {
   font-size: larger;
   align-content: center;
   color: #fff;
-  transition: all 0.5s cubic-bezier(1, -0.01, 0, 1.53) 100ms;
+  transition: all 0.5s cubic-bezier(0.38, 0.46, 0.59, 1.14) 100ms;
 }
 .pbbd:hover {background: #fbff0c; color: #000;}

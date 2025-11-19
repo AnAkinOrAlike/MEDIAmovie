@@ -1,13 +1,14 @@
 import '../main.css';
 import { useNavigate, useLocation } from "react-router-dom";
 import { useState, useEffect } from 'react';
-import { LibraryAdd, DarkMode, Visibility, Image, Palette, CardsStar, DashboardCustomize, Save, Delete } from '@nine-thirty-five/material-symbols-react/sharp';
+import { LibraryAdd, DarkMode, Visibility, CardsStar, DashboardCustomize, Save, Delete } from '@nine-thirty-five/material-symbols-react/sharp';
+import { Image, Palette } from '@nine-thirty-five/material-symbols-react/sharp/filled';
 import { supabase } from '../supabase.js';
 import React from 'react';
 
 export default function NuevoMedia(){
 const navigate = useNavigate();
-const [theme, setTheme] = useState('light');
+const [theme, setTheme] = useState('dark');
 
 const toggleTheme = () => {
         setTheme(prevTheme => (prevTheme === 'light' ? 'dark' : 'light'));
