@@ -10,7 +10,7 @@ A responsive web application to track and manage your personal media consumption
 
 MEDIAmovie helps you collect, rate, and track media items across statuses (Want to Watch / Want to Read, Watching / Reading, Watched / Read). It supports custom cover uploads, filtering, and a clean responsive UI for mobile and desktop.
 
-Last Release: [text](https://github.com/AnAkinOrAlike/MEDIAmovie/releases/tag/alpha-0.2.0)
+Last Release: [Alpha 0.2.0](https://github.com/AnAkinOrAlike/MEDIAmovie/releases/tag/alpha-0.2.0)
 
 ## 📌 Features
 
